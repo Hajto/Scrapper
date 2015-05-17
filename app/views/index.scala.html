@@ -1,3 +1,22 @@
 @(message: Html)
 
-@message
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/main.css")"/>
+        <title> Pogrzeb Web Scrapper </title>
+
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/ajaxAPI.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/hello.js")"></script>
+        <script>
+            var data = @message;
+        </script>
+    </head>
+    <body onload="init()">
+        <div class="center">
+            <select id="mainContainer"></select>
+            <table id="data"></table>
+        </div>
+    </body>
+</html>
+
