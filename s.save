@@ -1,0 +1,4 @@
+Error:Unresolved dependencies:
+	 sbt-run-support-210#sbt-run-support-210_2.10;0.1-SNAPSHOT: not found
+
+See complete log in /home/haito/.IntelliJIdea14/system/log/sbt.last.log
