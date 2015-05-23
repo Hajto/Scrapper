@@ -4,18 +4,22 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/main.css")"/>
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.at("stylesheets/bootstrap.min.css")"/>
         <title> Pogrzeb Web Scrapper </title>
 
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/ajaxAPI.js")"></script>
         <script type="text/javascript" src="@routes.Assets.at("javascripts/hello.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/Libs/jquery-2.1.4.min.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.at("javascripts/Libs/bootstrap.min.js")"></script>
+
         <script>
+            var parsed = [];
             var data = @message;
         </script>
     </head>
     <body onload="init()">
         <div class="center">
             <select id="mainContainer"></select>
-            <table id="data"></table>
+            <div id="data"></div>
         </div>
     </body>
 </html>
