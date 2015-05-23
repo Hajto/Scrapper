@@ -3,7 +3,7 @@ package controllers
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
-import model._
+import model.{FuneralSchedule, Funeral}
 import model.formats._
 import play.api._
 import play.api.libs.json.Json
@@ -43,16 +43,28 @@ object Application extends Controller {
   }
 
   def downlaodData(date: String): Future[List[FuneralSchedule]] = {
+    def removeMarkers(s: String) = {
+      s.replaceAll( """(</?\s?td\s?>)""", "")
+    }
+
     Future[List[FuneralSchedule]] {
-      val source = Source.fromURL("http://zck.krakow.pl/?pageId=16&date="+date).mkString
+      var schedulesList: List[FuneralSchedule] = List()
+
+      val source = Source.fromURL("http://zck.krakow.pl/?pageId=16&date=" + date).mkString
       val regex = "(?s)<table>.+?(Cmentarz.+?)<.+?</table>".r
 
-      var thing: List[FuneralSchedule] = List()
-
-      val out = regex.findAllIn(source).matchData foreach { elem =>
-        thing ::= FuneralSchedule(elem.group(1),clearStrings(elem.group(0)))
+      val out = regex.findAllIn(source).matchData foreach { table =>
+        var jsonFeed: List[Funeral] = List()
+        """<tr\s?>.+?</\s?tr>""".r.findAllIn(clearStrings(table.group(0))).matchData foreach { tr =>
+          val cleanTR = tr.toString().replaceAll( """<td\s?>\s?</\s?td>""", "<td>Brak Danych</td>")
+          val a #:: b #:: c #:: _ = """<td\s?>.+?</\s?td>""".r.findAllIn(cleanTR).toStream
+          val feedObject = Funeral(removeMarkers(a), removeMarkers(b), removeMarkers(c))
+          jsonFeed ::= feedObject
+        }
+        schedulesList ::= FuneralSchedule(table.group(1),jsonFeed.reverse)
       }
-      thing
+
+      schedulesList
     }
   }
 
